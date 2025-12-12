@@ -9,10 +9,12 @@ function Footer() {
         <div className="footer-content">
           <div className="footer-section">
             <h3>Dernival Fontes</h3>
-            <p>Imobiliária</p>
+            <p>Consultoria de Imóveis</p>
             <p className="footer-description">
-              Sua imobiliária de confiança em Natal e RN. 
-              Realizando sonhos e construindo histórias.
+              🏠 VENDA | LOCAÇÃO | ADMINISTRAÇÃO DE IMÓVEIS
+            </p>
+            <p className="footer-creci">
+              📊 CRECI RN: 6359 - 17° REGIÃO
             </p>
           </div>
 
@@ -45,9 +47,11 @@ function Footer() {
           <div className="footer-section">
             <h4>Contato</h4>
             <ul>
-              <li>📍 Natal - RN</li>
-              <li>📞 (84) 9999-9999</li>
-              <li>📧 contato@dernivalfontes.com.br</li>
+              <li>📍 Rua Poço Branco, 33</li>
+              <li>Nova Parnamirim, Parnamirim</li>
+              <li>Rio Grande do Norte</li>
+              <li>CEP: 59152-280</li>
+              <li>🔗 <a href="https://linktr.ee/DernivalFontes" target="_blank" rel="noopener noreferrer">linktr.ee/DernivalFontes</a></li>
             </ul>
           </div>
 
