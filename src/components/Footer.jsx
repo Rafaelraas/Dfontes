@@ -66,7 +66,7 @@ function Footer() {
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; {currentYear} Imobiliária Dernival Fontes. Todos os direitos reservados.</p>
+          <p>&copy; {currentYear} Dernival Fontes Consultoria de Imóveis. Todos os direitos reservados.</p>
           <p className="footer-dev">
             Desenvolvido com ❤️ para facilitar seus negócios imobiliários
           </p>
