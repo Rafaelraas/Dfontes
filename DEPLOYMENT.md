@@ -42,34 +42,37 @@ npm install -g netlify-cli
 netlify deploy --prod
 ```
 
-### Opção 3: GitHub Pages
+### Opção 3: GitHub Pages (Configurado - Recomendado) ✅
 
-1. Adicione no `package.json`:
-```json
-{
-  "homepage": "https://seu-usuario.github.io/Dfontes"
-}
-```
+Este projeto está configurado para deploy automático via GitHub Actions!
 
-2. Instale gh-pages:
+**Deploy Automático:**
+1. Faça push para a branch `main`:
 ```bash
-npm install --save-dev gh-pages
+git push origin main
 ```
 
-3. Adicione scripts:
-```json
-{
-  "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
-  }
-}
-```
+2. O GitHub Actions irá automaticamente:
+   - Instalar dependências
+   - Fazer build do projeto
+   - Fazer deploy para GitHub Pages
 
-4. Deploy:
+3. Acesse: `https://rafaelraas.github.io/Dfontes`
+
+**Configuração já incluída:**
+- ✅ Workflow GitHub Actions (`.github/workflows/deploy.yml`)
+- ✅ Base path configurado no `vite.config.js`
+- ✅ Scripts de deploy no `package.json`
+- ✅ Homepage configurada
+
+**Deploy Manual (alternativa):**
 ```bash
 npm run deploy
 ```
+
+**Nota:** Para ativar GitHub Pages pela primeira vez:
+1. Vá em Settings → Pages no repositório
+2. Em "Source", selecione "GitHub Actions"
 
 ## 🔧 Configurações Importantes
 
