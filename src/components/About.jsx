@@ -14,14 +14,15 @@ function About() {
         <div className="about-content">
           <div className="about-text">
             <p className="about-description">
-              A <strong>Imobiliária Dernival Fontes</strong> atua há anos no mercado 
+              A <strong>Dernival Fontes Consultoria de Imóveis</strong> atua no mercado 
               imobiliário da Grande Natal e em todo o estado do Rio Grande do Norte, 
-              oferecendo soluções completas para compra, venda e locação de imóveis.
+              oferecendo soluções completas para <strong>venda, locação e administração de imóveis</strong>.
             </p>
             <p className="about-description">
-              Nossa missão é facilitar a realização do sonho da casa própria e 
-              proporcionar os melhores negócios imobiliários para nossos clientes, 
-              com transparência, profissionalismo e atendimento personalizado.
+              Registrados no <strong>CRECI RN: 6359 - 17° REGIÃO</strong>, nossa missão é 
+              facilitar a realização do sonho da casa própria e proporcionar os melhores 
+              negócios imobiliários para nossos clientes, com transparência, 
+              profissionalismo e atendimento personalizado.
             </p>
             
             <div className="about-highlights">

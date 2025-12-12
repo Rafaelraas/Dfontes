@@ -5,15 +5,19 @@
 }
 
 :root {
-  /* Color palette - ready for branding update */
-  --primary-color: #2563eb;
-  --primary-dark: #1e40af;
-  --secondary-color: #f59e0b;
-  --accent-color: #10b981;
-  --text-dark: #1f2937;
+  /* Color palette - Dernival Fontes Brand Identity */
+  --primary-color: #4A90E2;
+  --primary-dark: #2E5C8A;
+  --primary-light: #6BA5E7;
+  --secondary-color: #5CA9D4;
+  --accent-color: #7DB8DD;
+  --gradient-start: #4A90E2;
+  --gradient-end: #2E5C8A;
+  --text-dark: #1a1a1a;
   --text-light: #6b7280;
   --background: #ffffff;
   --background-light: #f9fafb;
+  --background-dark: #1a1a1a;
   --border-color: #e5e7eb;
   
   /* Typography */
