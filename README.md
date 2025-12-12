@@ -115,12 +115,22 @@ O site está otimizado para:
 
 ## 🚀 Deploy
 
-O projeto pode ser deployado em qualquer serviço de hospedagem estática:
+Este projeto está configurado para deploy automático no **GitHub Pages** via GitHub Actions!
+
+### Deploy Automático (GitHub Pages) ✅
+
+Ao fazer push para a branch `main`, o site é automaticamente deployado em:
+**https://rafaelraas.github.io/Dfontes**
+
+### Outras Opções de Deploy
+
+O projeto também pode ser deployado em outros serviços:
 
 - **Vercel**: `vercel deploy`
 - **Netlify**: Arraste a pasta `dist` ou conecte o repositório
-- **GitHub Pages**: Use GitHub Actions
 - **Servidor próprio**: Faça upload da pasta `dist`
+
+Para mais detalhes, consulte [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## 📄 Licença
 
