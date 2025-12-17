@@ -85,8 +85,15 @@
 .property-location {
   font-size: 1.25rem;
   color: var(--text-dark);
-  margin-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
   font-weight: 600;
+}
+
+.property-description {
+  font-size: 0.9375rem;
+  color: var(--text-light);
+  margin-bottom: var(--spacing-md);
+  line-height: 1.5;
 }
 
 .property-details {

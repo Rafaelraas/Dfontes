@@ -18,13 +18,34 @@ function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    
+    // Basic validation
+    if (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim() || !formData.message.trim()) {
+      alert('Por favor, preencha todos os campos obrigatórios.')
+      return
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(formData.email)) {
+      alert('Por favor, insira um email válido.')
+      return
+    }
+
+    // Phone validation (basic Brazilian format)
+    const phoneRegex = /^\(?[0-9]{2}\)?\s?[0-9]{4,5}-?[0-9]{4}$/
+    if (!phoneRegex.test(formData.phone.replace(/\s/g, ''))) {
+      alert('Por favor, insira um telefone válido no formato (84) 99999-9999.')
+      return
+    }
+
     // Placeholder for form submission
     alert('Obrigado pelo contato! Em breve retornaremos.')
     setFormData({ name: '', email: '', phone: '', message: '' })
   }
 
   return (
-    <section id="contato" className="contact section">
+    <section id="contato" className="contact section" aria-label="Seção de contato">
       <div className="container">
         <div className="contact-header">
           <h2 className="section-title">Entre em Contato</h2>
@@ -36,38 +57,47 @@ function Contact() {
         <div className="contact-content">
           <div className="contact-info">
             <h3>Fale Conosco</h3>
-            <div className="info-items">
-              <div className="info-item">
-                <div className="info-icon">📍</div>
+            <div className="info-items" role="list">
+              <div className="info-item" role="listitem">
+                <div className="info-icon" aria-hidden="true">📍</div>
                 <div>
                   <strong>Localização</strong>
-                  <p>Natal - Rio Grande do Norte</p>
+                  <p>Rua Poço Branco, 33 - Parnamirim/RN</p>
+                  <p className="coverage">CEP: 59152-280</p>
                   <p className="coverage">Atendemos Natal e toda Grande Natal</p>
                 </div>
               </div>
 
-              <div className="info-item">
-                <div className="info-icon">📞</div>
+              <div className="info-item" role="listitem">
+                <div className="info-icon" aria-hidden="true">📞</div>
                 <div>
                   <strong>Telefone</strong>
-                  <p>(84) 9999-9999</p>
+                  <p><a href="tel:+558499999999" aria-label="Ligar para (84) 9999-9999">(84) 9999-9999</a></p>
                 </div>
               </div>
 
-              <div className="info-item">
-                <div className="info-icon">📧</div>
+              <div className="info-item" role="listitem">
+                <div className="info-icon" aria-hidden="true">📧</div>
                 <div>
                   <strong>Email</strong>
-                  <p>contato@dernivalfontes.com.br</p>
+                  <p><a href="mailto:contato@dernivalfontes.com.br" aria-label="Enviar email para contato@dernivalfontes.com.br">contato@dernivalfontes.com.br</a></p>
                 </div>
               </div>
 
-              <div className="info-item">
-                <div className="info-icon">🕒</div>
+              <div className="info-item" role="listitem">
+                <div className="info-icon" aria-hidden="true">🕒</div>
                 <div>
                   <strong>Horário</strong>
                   <p>Seg - Sex: 8h às 18h</p>
                   <p>Sábado: 8h às 12h</p>
+                </div>
+              </div>
+
+              <div className="info-item" role="listitem">
+                <div className="info-icon" aria-hidden="true">🏛️</div>
+                <div>
+                  <strong>CRECI</strong>
+                  <p>6359 - 17° REGIÃO (RN)</p>
                 </div>
               </div>
             </div>
@@ -85,7 +115,7 @@ function Contact() {
             </div>
           </div>
 
-          <form className="contact-form" onSubmit={handleSubmit}>
+          <form className="contact-form" onSubmit={handleSubmit} aria-label="Formulário de contato">
             <div className="form-group">
               <label htmlFor="name">Nome Completo *</label>
               <input
@@ -96,7 +126,10 @@ function Contact() {
                 onChange={handleChange}
                 required
                 placeholder="Seu nome"
+                aria-required="true"
+                aria-describedby="name-help"
               />
+              <span id="name-help" className="sr-only">Digite seu nome completo</span>
             </div>
 
             <div className="form-group">
@@ -109,7 +142,10 @@ function Contact() {
                 onChange={handleChange}
                 required
                 placeholder="seu@email.com"
+                aria-required="true"
+                aria-describedby="email-help"
               />
+              <span id="email-help" className="sr-only">Digite seu endereço de email</span>
             </div>
 
             <div className="form-group">
@@ -122,7 +158,10 @@ function Contact() {
                 onChange={handleChange}
                 required
                 placeholder="(84) 99999-9999"
+                aria-required="true"
+                aria-describedby="phone-help"
               />
+              <span id="phone-help" className="sr-only">Digite seu telefone com DDD</span>
             </div>
 
             <div className="form-group">
@@ -134,11 +173,14 @@ function Contact() {
                 onChange={handleChange}
                 required
                 rows="5"
-                placeholder="Como podemos ajudá-lo?"
+                placeholder="Como podemos ajudá-lo? Descreva o imóvel que você procura."
+                aria-required="true"
+                aria-describedby="message-help"
               ></textarea>
+              <span id="message-help" className="sr-only">Descreva suas necessidades ou dúvidas</span>
             </div>
 
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary" aria-label="Enviar formulário de contato">
               Enviar Mensagem
             </button>
           </form>
