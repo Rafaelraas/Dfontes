@@ -13,7 +13,8 @@ import {
   getPropertyStats,
   getUniqueCities,
   getUniqueNeighborhoods,
-  generatePropertySummary
+  generatePropertySummary,
+  parsePriceToNumber
 } from '../utils/propertyHelpers.js';
 
 import {
@@ -201,10 +202,12 @@ class PropertyAIAgent {
       preferences.type = 'Casa';
     }
     
-    // Extract budget
-    const budgetMatch = message.match(/até\s*R?\$?\s*([\d.]+)/i);
+    // Extract budget using the helper function
+    const budgetMatch = message.match(/até\s*R?\$?\s*([\d.,]+)/i);
     if (budgetMatch) {
-      preferences.maxPrice = parseInt(budgetMatch[1].replace(/\./g, ''));
+      // Use parsePriceToNumber for consistency - construct a price string format
+      const priceStr = `R$ ${budgetMatch[1]}`;
+      preferences.maxPrice = parsePriceToNumber(priceStr);
     }
     
     return preferences;

@@ -5,13 +5,25 @@
 
 /**
  * Parse price string to numeric value for comparison
- * @param {string} priceString - Price in format "R$ 450.000"
+ * Handles Brazilian currency format: R$ 450.000 or R$ 450.000,50
+ * @param {string} priceString - Price in format "R$ 450.000" or "R$ 450.000,50"
  * @returns {number} Numeric price value
  */
 export const parsePriceToNumber = (priceString) => {
   if (!priceString) return 0;
-  // Remove "R$" and convert Brazilian format (450.000) to number (450000)
-  return parseInt(priceString.replace(/[R$\s.]/g, '').replace(',', '.'));
+  // Remove "R$" and spaces, then handle Brazilian format
+  // Brazilian format: thousands separator is ".", decimal separator is ","
+  // Example: R$ 450.000,50 -> 450000.50
+  const cleaned = priceString.replace(/R\$\s*/g, '');
+  
+  // Check if there's a comma (decimal separator)
+  if (cleaned.includes(',')) {
+    // Remove periods (thousands separator) and replace comma with period for decimal
+    return parseFloat(cleaned.replace(/\./g, '').replace(',', '.'));
+  } else {
+    // No decimal part, just remove periods (thousands separator)
+    return parseInt(cleaned.replace(/\./g, ''));
+  }
 };
 
 /**
@@ -211,6 +223,14 @@ export const getPropertyStats = (properties) => {
  * @returns {Array} Properties with match scores
  */
 export const matchProperties = (properties, preferences = {}) => {
+  // If no preferences provided, return properties with default score
+  if (!preferences || Object.keys(preferences).length === 0) {
+    return properties.map(property => ({
+      ...property,
+      matchScore: 50 // Neutral score when no preferences
+    }));
+  }
+
   return properties.map(property => {
     let score = 0;
     let maxScore = 0;
@@ -311,11 +331,11 @@ export const generatePropertySummary = (property) => {
   parts.push(`${property.type} em ${property.location}`);
   
   if (property.bedrooms > 0) {
-    parts.push(`${property.bedrooms} quarto${property.bedrooms > 1 ? 's' : ''}`);
+    parts.push(`${property.bedrooms} ${pluralizePT(property.bedrooms, 'quarto')}`);
   }
   
   if (property.bathrooms > 0) {
-    parts.push(`${property.bathrooms} banheiro${property.bathrooms > 1 ? 's' : ''}`);
+    parts.push(`${property.bathrooms} ${pluralizePT(property.bathrooms, 'banheiro')}`);
   }
   
   parts.push(`${property.area}m²`);
@@ -349,4 +369,16 @@ export const validateProperty = (property) => {
     valid: errors.length === 0,
     errors
   };
+};
+
+/**
+ * Pluralize Portuguese words
+ * @param {number} count - Number to determine pluralization
+ * @param {string} singular - Singular form of the word
+ * @param {string} plural - Plural form of the word (optional, adds 's' by default)
+ * @returns {string} Correctly pluralized word
+ */
+export const pluralizePT = (count, singular, plural = null) => {
+  if (count === 1) return singular;
+  return plural || `${singular}s`;
 };

@@ -1,4 +1,5 @@
 import './Properties.css'
+import { pluralizePT } from '../utils/propertyHelpers'
 
 function Properties() {
   const properties = [
@@ -118,15 +119,15 @@ function Properties() {
 
                 <div className="property-details" aria-label="Características do imóvel">
                   {property.bedrooms > 0 && (
-                    <div className="detail-item" aria-label={`${property.bedrooms} quartos`}>
+                    <div className="detail-item" aria-label={`${property.bedrooms} ${pluralizePT(property.bedrooms, 'quarto')}`}>
                       <span className="detail-icon" aria-hidden="true">🛏️</span>
-                      <span>{property.bedrooms} quarto{property.bedrooms > 1 ? 's' : ''}</span>
+                      <span>{property.bedrooms} {pluralizePT(property.bedrooms, 'quarto')}</span>
                     </div>
                   )}
                   {property.bathrooms > 0 && (
-                    <div className="detail-item" aria-label={`${property.bathrooms} banheiros`}>
+                    <div className="detail-item" aria-label={`${property.bathrooms} ${pluralizePT(property.bathrooms, 'banheiro')}`}>
                       <span className="detail-icon" aria-hidden="true">🚿</span>
-                      <span>{property.bathrooms} banheiro{property.bathrooms > 1 ? 's' : ''}</span>
+                      <span>{property.bathrooms} {pluralizePT(property.bathrooms, 'banheiro')}</span>
                     </div>
                   )}
                   <div className="detail-item" aria-label={`Área de ${property.area} metros quadrados`}>

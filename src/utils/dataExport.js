@@ -4,6 +4,7 @@
  */
 
 import { getPropertyStats, extractCity, extractNeighborhood, parsePriceToNumber } from './propertyHelpers';
+import COMPANY_INFO from '../constants/companyInfo';
 
 /**
  * Export properties as JSON for AI agent consumption
@@ -189,12 +190,12 @@ export const exportPropertiesText = (properties) => {
   });
   
   text += '=== INFORMAÇÕES DE CONTATO ===\n';
-  text += 'Dernival Fontes Consultoria de Imóveis\n';
-  text += 'CRECI RN: 6359 - 17° REGIÃO\n';
-  text += 'Endereço: Rua Poço Branco, 33 - Parnamirim/RN - CEP 59152-280\n';
-  text += 'Telefone: (84) 9999-9999\n';
-  text += 'Email: contato@dernivalfontes.com.br\n';
-  text += 'Horário: Seg-Sex 8h-18h | Sáb 8h-12h\n';
+  text += `${COMPANY_INFO.name}\n`;
+  text += `CRECI: ${COMPANY_INFO.creci}\n`;
+  text += `Endereço: ${COMPANY_INFO.address.full}\n`;
+  text += `Telefone: ${COMPANY_INFO.contact.phone}\n`;
+  text += `Email: ${COMPANY_INFO.contact.email}\n`;
+  text += `Horário: ${COMPANY_INFO.hours.full}\n`;
   
   return text;
 };
@@ -208,15 +209,15 @@ export const exportPropertiesText = (properties) => {
 export const exportPropertiesForNLP = (properties) => {
   return {
     context: {
-      company: 'Dernival Fontes Consultoria de Imóveis',
-      creci: '6359 - 17° REGIÃO (RN)',
-      serviceArea: 'Grande Natal e todo Rio Grande do Norte',
-      specialization: 'Venda, Locação e Administração de Imóveis',
+      company: COMPANY_INFO.name,
+      creci: COMPANY_INFO.creci,
+      serviceArea: COMPANY_INFO.serviceArea.description,
+      specialization: COMPANY_INFO.services.join(', '),
       contact: {
-        phone: '(84) 9999-9999',
-        email: 'contato@dernivalfontes.com.br',
-        address: 'Rua Poço Branco, 33 - Parnamirim/RN - CEP 59152-280',
-        hours: 'Segunda a Sexta: 8h às 18h, Sábado: 8h às 12h'
+        phone: COMPANY_INFO.contact.phone,
+        email: COMPANY_INFO.contact.email,
+        address: COMPANY_INFO.address.full,
+        hours: COMPANY_INFO.hours.full
       }
     },
     inventory: properties.map(property => {
