@@ -432,9 +432,9 @@ import image from './assets/image.png'
 ### Documentação Disponível
 
 Consulte sempre:
-- **README_AI_AGENT.md**: Guia completo para AI agents
-- **AI_AGENT_IMPROVEMENTS.md**: Melhorias implementadas
-- **src/examples/aiAgentIntegration.js**: Exemplos práticos
+- **[README_AI_AGENT.md](../README_AI_AGENT.md)**: Guia completo para AI agents
+- **[AI_AGENT_IMPROVEMENTS.md](../AI_AGENT_IMPROVEMENTS.md)**: Melhorias implementadas
+- **[src/examples/aiAgentIntegration.js](../src/examples/aiAgentIntegration.js)**: Exemplos práticos
 
 ### Padrões de Integração
 
@@ -630,11 +630,11 @@ function getGoogleMapsLink(lat, lng) {
 
 ### Documentação do Projeto
 
-- **README.md**: Visão geral e setup
-- **README_AI_AGENT.md**: Integração com AI agents
-- **AI_AGENT_IMPROVEMENTS.md**: Resumo de melhorias AI
-- **DEPLOYMENT.md**: Guia de deploy
-- **FINAL_RECOMMENDATIONS.md**: Recomendações finais
+- **[README.md](../README.md)**: Visão geral e setup
+- **[README_AI_AGENT.md](../README_AI_AGENT.md)**: Integração com AI agents
+- **[AI_AGENT_IMPROVEMENTS.md](../AI_AGENT_IMPROVEMENTS.md)**: Resumo de melhorias AI
+- **[DEPLOYMENT.md](../DEPLOYMENT.md)**: Guia de deploy
+- **[FINAL_RECOMMENDATIONS.md](../FINAL_RECOMMENDATIONS.md)**: Recomendações finais
 
 ### Links Úteis
 
