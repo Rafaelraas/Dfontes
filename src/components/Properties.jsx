@@ -1,7 +1,10 @@
+import { useState } from 'react'
 import './Properties.css'
 import { pluralizePT } from '../utils/propertyHelpers'
+import PropertyDetails from './PropertyDetails'
 
 function Properties() {
+  const [selectedProperty, setSelectedProperty] = useState(null)
   const properties = [
     {
       id: 1,
@@ -140,10 +143,10 @@ function Properties() {
                   <div className="property-price" aria-label={`Preço: ${property.price}`}>{property.price}</div>
                   <button 
                     className="btn-contact"
-                    aria-label={`Saiba mais sobre ${property.type} em ${property.location}`}
-                    onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
+                    aria-label={`Ver detalhes sobre ${property.type} em ${property.location}`}
+                    onClick={() => setSelectedProperty(property)}
                   >
-                    Saiba Mais
+                    Ver Detalhes
                   </button>
                 </div>
               </div>
@@ -161,6 +164,13 @@ function Properties() {
           </button>
         </div>
       </div>
+
+      {selectedProperty && (
+        <PropertyDetails 
+          property={selectedProperty} 
+          onClose={() => setSelectedProperty(null)} 
+        />
+      )}
     </section>
   )
 }
