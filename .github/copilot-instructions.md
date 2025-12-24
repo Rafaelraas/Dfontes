@@ -1,5 +1,7 @@
 # GitHub Copilot Instructions - Dfontes (Dernival Fontes Imobiliária)
 
+> 💡 **Guia Rápido**: Para referência rápida de código e snippets comuns, veja [COPILOT_QUICK_REFERENCE.md](./COPILOT_QUICK_REFERENCE.md)
+
 ## 📋 Visão Geral do Projeto
 
 Este é um SPA (Single Page Application) moderno para a **Imobiliária Dernival Fontes**, especializada em imóveis em Natal e Grande Natal no Rio Grande do Norte. O site foi desenvolvido com foco em:
@@ -697,6 +699,11 @@ Antes de submeter um PR, verifique:
 10. ✅ Documente código complexo com JSDoc
 
 **Este projeto está pronto para produção e preparado para integração com AI agents para ajudar clientes a encontrar imóveis em Natal e Rio Grande do Norte.**
+
+## 📚 Recursos Adicionais para GitHub Copilot
+
+Para referência rápida enquanto codifica, consulte:
+- **[COPILOT_QUICK_REFERENCE.md](./COPILOT_QUICK_REFERENCE.md)**: Snippets, schemas e exemplos de código prontos para uso
 
 ---
 
