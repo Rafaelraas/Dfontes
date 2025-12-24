@@ -1,84 +1,17 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './Properties.css'
 import { pluralizePT } from '../utils/propertyHelpers'
 import PropertyDetails from './PropertyDetails'
+import { getProperties } from '../utils/storage'
 
 function Properties() {
   const [selectedProperty, setSelectedProperty] = useState(null)
-  const properties = [
-    {
-      id: 1,
-      type: 'Apartamento',
-      location: 'Ponta Negra - Natal/RN',
-      bedrooms: 3,
-      bathrooms: 2,
-      area: 85,
-      price: 'R$ 450.000',
-      featured: true,
-      status: 'available',
-      description: 'Moderno apartamento em Ponta Negra, próximo à praia'
-    },
-    {
-      id: 2,
-      type: 'Casa',
-      location: 'Candelária - Natal/RN',
-      bedrooms: 4,
-      bathrooms: 3,
-      area: 180,
-      price: 'R$ 680.000',
-      featured: true,
-      status: 'available',
-      description: 'Casa ampla em bairro estabelecido de Natal'
-    },
-    {
-      id: 3,
-      type: 'Apartamento',
-      location: 'Lagoa Nova - Natal/RN',
-      bedrooms: 2,
-      bathrooms: 1,
-      area: 65,
-      price: 'R$ 320.000',
-      featured: false,
-      status: 'available',
-      description: 'Apartamento aconchegante em área central'
-    },
-    {
-      id: 4,
-      type: 'Terreno',
-      location: 'Parnamirim - Grande Natal/RN',
-      bedrooms: 0,
-      bathrooms: 0,
-      area: 360,
-      price: 'R$ 180.000',
-      featured: false,
-      status: 'available',
-      description: 'Terreno pronto para construção'
-    },
-    {
-      id: 5,
-      type: 'Casa',
-      location: 'Tirol - Natal/RN',
-      bedrooms: 5,
-      bathrooms: 4,
-      area: 250,
-      price: 'R$ 1.200.000',
-      featured: true,
-      status: 'available',
-      description: 'Casa de luxo em localização premium'
-    },
-    {
-      id: 6,
-      type: 'Apartamento',
-      location: 'Capim Macio - Natal/RN',
-      bedrooms: 3,
-      bathrooms: 2,
-      area: 95,
-      price: 'R$ 520.000',
-      featured: false,
-      status: 'available',
-      description: 'Apartamento espaçoso em bairro em crescimento'
-    }
-  ]
+  const [properties, setProperties] = useState([])
+
+  useEffect(() => {
+    // Load properties from storage
+    setProperties(getProperties())
+  }, [])
 
   return (
     <section id="imoveis" className="properties section" aria-label="Listagem de imóveis disponíveis">

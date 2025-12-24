@@ -1,6 +1,6 @@
 import './Footer.css'
 
-function Footer() {
+function Footer({ onOpenAdmin }) {
   const currentYear = new Date().getFullYear()
 
   return (
@@ -70,6 +70,11 @@ function Footer() {
           <p className="footer-dev">
             Desenvolvido com ❤️ para facilitar seus negócios imobiliários
           </p>
+          {onOpenAdmin && (
+            <button className="admin-access-btn" onClick={onOpenAdmin} title="Painel Administrativo (Ctrl+K)">
+              ⚙️ Admin
+            </button>
+          )}
         </div>
       </div>
     </footer>
