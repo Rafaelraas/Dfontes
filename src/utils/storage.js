@@ -5,7 +5,9 @@
 
 const STORAGE_KEYS = {
   PROPERTIES: 'dfontes_properties',
-  CLIENTS: 'dfontes_clients'
+  CLIENTS: 'dfontes_clients',
+  AUTH_USER: 'dfontes_auth_user',
+  AUTH_SESSION: 'dfontes_auth_session'
 };
 
 // Default properties data
