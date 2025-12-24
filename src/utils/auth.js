@@ -1,6 +1,19 @@
 /**
  * Authentication and Authorization Management
  * Handles user authentication, session management, and admin access control
+ * 
+ * ⚠️ DEVELOPMENT ONLY - NOT FOR PRODUCTION USE
+ * This implementation uses:
+ * - Hardcoded credentials (should use backend API)
+ * - Plain text passwords (should use bcrypt or similar hashing)
+ * - localStorage for sessions (vulnerable to XSS, should use httpOnly cookies)
+ * 
+ * For production:
+ * 1. Implement proper backend authentication with JWT
+ * 2. Hash passwords with bcrypt
+ * 3. Use httpOnly cookies for session management
+ * 4. Add rate limiting and 2FA
+ * 5. Never expose credentials in source code
  */
 
 const STORAGE_KEYS = {
@@ -8,11 +21,12 @@ const STORAGE_KEYS = {
   AUTH_SESSION: 'dfontes_auth_session'
 }
 
-// Default admin credentials (in production, this should be securely stored in a backend)
+// ⚠️ WARNING: Hardcoded credentials - DEVELOPMENT ONLY
+// In production, this should be handled by a secure backend API
 const DEFAULT_ADMIN = {
   id: 1,
   email: 'admin@dfontes.com.br',
-  password: 'admin123', // In production, this should be hashed
+  password: 'admin123', // ⚠️ Plain text - should be hashed in production
   name: 'Administrador',
   role: 'admin'
 }
@@ -45,6 +59,8 @@ export const login = (email, password) => {
     }
 
     // Check credentials against default admin
+    // ⚠️ WARNING: Plain text comparison - insecure for production
+    // In production, use bcrypt.compare() or similar for hashed passwords
     if (email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password) {
       const user = {
         id: DEFAULT_ADMIN.id,
@@ -61,6 +77,8 @@ export const login = (email, password) => {
       }
 
       // Store session
+      // ⚠️ WARNING: localStorage is vulnerable to XSS attacks
+      // In production, use httpOnly cookies or secure backend session management
       localStorage.setItem(STORAGE_KEYS.AUTH_SESSION, JSON.stringify(session))
       localStorage.setItem(STORAGE_KEYS.AUTH_USER, JSON.stringify(user))
 
