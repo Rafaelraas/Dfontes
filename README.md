@@ -140,3 +140,16 @@ Este projeto foi desenvolvido para a Imobiliária Dernival Fontes.
 
 Desenvolvido com ❤️ para facilitar os negócios imobiliários em Natal e RN.
 
+### 🤖 GitHub Copilot
+
+Este projeto inclui instruções detalhadas para o GitHub Copilot para facilitar o desenvolvimento e manutenção do código. Consulte:
+
+- **[.github/copilot-instructions.md](.github/copilot-instructions.md)** - Guia completo para desenvolvimento com GitHub Copilot
+  - Padrões de código e convenções
+  - Estrutura de dados e schemas
+  - Funções utilitárias e helpers
+  - Componentes e patterns
+  - Boas práticas e troubleshooting
+
+Para desenvolvedores que utilizam GitHub Copilot, essas instruções ajudarão a gerar código consistente com os padrões do projeto.
+
