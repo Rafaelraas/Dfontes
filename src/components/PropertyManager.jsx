@@ -178,7 +178,7 @@ function PropertyManager() {
                     type="number"
                     min="0"
                     value={editingProperty.bedrooms}
-                    onChange={(e) => handleChange('bedrooms', parseInt(e.target.value) || 0)}
+                    onChange={(e) => handleChange('bedrooms', Number(e.target.value) || 0)}
                   />
                 </div>
 
@@ -189,7 +189,7 @@ function PropertyManager() {
                     type="number"
                     min="0"
                     value={editingProperty.bathrooms}
-                    onChange={(e) => handleChange('bathrooms', parseInt(e.target.value) || 0)}
+                    onChange={(e) => handleChange('bathrooms', Number(e.target.value) || 0)}
                   />
                 </div>
               </div>
@@ -202,7 +202,7 @@ function PropertyManager() {
                     type="number"
                     min="0"
                     value={editingProperty.area}
-                    onChange={(e) => handleChange('area', parseInt(e.target.value) || 0)}
+                    onChange={(e) => handleChange('area', Number(e.target.value) || 0)}
                     required
                   />
                 </div>

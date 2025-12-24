@@ -111,8 +111,10 @@ export const saveProperty = (property) => {
         properties[index] = property;
       }
     } else {
-      // Create new
-      const maxId = properties.reduce((max, p) => Math.max(max, p.id || 0), 0);
+      // Create new - find the maximum ID and add 1
+      const maxId = properties.length > 0 
+        ? Math.max(...properties.map(p => p.id))
+        : 0;
       property.id = maxId + 1;
       properties.push(property);
     }
@@ -159,8 +161,10 @@ export const saveClient = (client) => {
         clients[index] = client;
       }
     } else {
-      // Create new
-      const maxId = clients.reduce((max, c) => Math.max(max, c.id || 0), 0);
+      // Create new - find the maximum ID and add 1
+      const maxId = clients.length > 0 
+        ? Math.max(...clients.map(c => c.id))
+        : 0;
       client.id = maxId + 1;
       client.createdAt = new Date().toISOString();
       clients.push(client);
