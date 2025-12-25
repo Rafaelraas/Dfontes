@@ -38,6 +38,8 @@ function PropertyManager() {
     if (window.confirm('Tem certeza que deseja excluir este imóvel?')) {
       deleteProperty(id)
       loadProperties()
+      // Notify other components that properties were updated
+      window.dispatchEvent(new Event('propertiesUpdated'))
     }
   }
 
@@ -48,6 +50,8 @@ function PropertyManager() {
       setShowForm(false)
       setEditingProperty(null)
       loadProperties()
+      // Notify other components that properties were updated
+      window.dispatchEvent(new Event('propertiesUpdated'))
     } catch (error) {
       alert('Erro ao salvar imóvel: ' + error.message)
     }
