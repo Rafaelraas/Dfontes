@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import './Properties.css'
-import { pluralizePT } from '../utils/propertyHelpers'
+import { pluralizePT, sortProperties } from '../utils/propertyHelpers'
 import PropertyDetails from './PropertyDetails'
 import { getProperties } from '../utils/storage'
 
@@ -8,9 +8,36 @@ function Properties() {
   const [selectedProperty, setSelectedProperty] = useState(null)
   const [properties, setProperties] = useState([])
 
+  const loadAndSortProperties = () => {
+    // Load properties from storage and sort with featured first
+    const loadedProperties = getProperties()
+    const sortedProperties = sortProperties(loadedProperties, 'featured-first')
+    setProperties(sortedProperties)
+  }
+
   useEffect(() => {
-    // Load properties from storage
-    setProperties(getProperties())
+    loadAndSortProperties()
+    
+    // Listen for storage changes (when admin updates properties)
+    const handleStorageChange = (e) => {
+      if (e.key === 'dfontes_properties' || e.key === null) {
+        loadAndSortProperties()
+      }
+    }
+    
+    window.addEventListener('storage', handleStorageChange)
+    
+    // Also listen for custom event (for same-tab updates)
+    const handlePropertiesUpdate = () => {
+      loadAndSortProperties()
+    }
+    
+    window.addEventListener('propertiesUpdated', handlePropertiesUpdate)
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+      window.removeEventListener('propertiesUpdated', handlePropertiesUpdate)
+    }
   }, [])
 
   return (
