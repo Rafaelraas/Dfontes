@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import './Properties.css'
-import { pluralizePT } from '../utils/propertyHelpers'
+import { pluralizePT, sortProperties } from '../utils/propertyHelpers'
 import PropertyDetails from './PropertyDetails'
 import { getProperties } from '../utils/storage'
 
@@ -9,8 +9,10 @@ function Properties() {
   const [properties, setProperties] = useState([])
 
   useEffect(() => {
-    // Load properties from storage
-    setProperties(getProperties())
+    // Load properties from storage and sort with featured first
+    const loadedProperties = getProperties()
+    const sortedProperties = sortProperties(loadedProperties, 'featured-first')
+    setProperties(sortedProperties)
   }, [])
 
   return (
