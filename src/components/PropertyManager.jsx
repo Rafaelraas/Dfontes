@@ -110,7 +110,8 @@ function PropertyManager() {
                   <td>{property.price}</td>
                   <td>
                     <span className={`badge ${property.status}`}>
-                      {property.status === 'available' ? 'Disponível' : 'Vendido'}
+                      {property.status === 'available' ? 'Disponível' : 
+                       property.status === 'rented' ? 'Alugado' : 'Vendido'}
                     </span>
                   </td>
                   <td>
@@ -244,6 +245,7 @@ function PropertyManager() {
                     required
                   >
                     <option value="available">Disponível</option>
+                    <option value="rented">Alugado</option>
                     <option value="sold">Vendido</option>
                   </select>
                 </div>
