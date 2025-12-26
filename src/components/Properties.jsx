@@ -11,7 +11,9 @@ function Properties() {
   const loadAndSortProperties = () => {
     // Load properties from storage and sort with featured first
     const loadedProperties = getProperties()
-    const sortedProperties = sortProperties(loadedProperties, 'featured-first')
+    // Filter to show only available properties
+    const availableProperties = loadedProperties.filter(p => p.status === 'available')
+    const sortedProperties = sortProperties(availableProperties, 'featured-first')
     setProperties(sortedProperties)
   }
 
