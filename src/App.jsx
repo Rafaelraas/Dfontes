@@ -6,10 +6,12 @@ import Properties from './components/Properties'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import Admin from './components/Admin'
+import ClientPortal from './components/ClientPortal'
 import './App.css'
 
 function App() {
   const [showAdmin, setShowAdmin] = useState(false)
+  const [showClientPortal, setShowClientPortal] = useState(false)
 
   useEffect(() => {
     const handleKeyPress = (e) => {
@@ -26,7 +28,7 @@ function App() {
 
   return (
     <div className="app">
-      <Header />
+      <Header onOpenClientPortal={() => setShowClientPortal(true)} />
       <main>
         <Hero />
         <About />
@@ -36,6 +38,7 @@ function App() {
       <Footer onOpenAdmin={() => setShowAdmin(true)} />
       
       {showAdmin && <Admin onClose={() => setShowAdmin(false)} />}
+      {showClientPortal && <ClientPortal onClose={() => setShowClientPortal(false)} />}
     </div>
   )
 }

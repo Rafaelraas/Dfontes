@@ -1,17 +1,22 @@
 import { useState, useEffect } from 'react'
-import { getClients, saveClient, deleteClient } from '../utils/storage'
+import { getClients, saveClient, deleteClient, getProposals, getProperties } from '../utils/storage'
 
 function ClientManager() {
   const [clients, setClients] = useState([])
+  const [proposals, setProposals] = useState([])
+  const [properties, setProperties] = useState([])
   const [editingClient, setEditingClient] = useState(null)
   const [showForm, setShowForm] = useState(false)
+  const [viewingClient, setViewingClient] = useState(null)
 
   useEffect(() => {
-    loadClients()
+    loadData()
   }, [])
 
-  const loadClients = () => {
+  const loadData = () => {
     setClients(getClients())
+    setProposals(getProposals())
+    setProperties(getProperties())
   }
 
   const handleAdd = () => {
@@ -33,11 +38,44 @@ function ClientManager() {
     setEditingClient({ ...client })
     setShowForm(true)
   }
+  
+  const handleViewDetails = (client) => {
+    setViewingClient(client)
+  }
 
   const handleDelete = (id) => {
     if (window.confirm('Tem certeza que deseja excluir este cliente?')) {
       deleteClient(id)
-      loadClients()
+      loadData()
+    }
+  }
+  
+  const handleApprovePendingUpdate = (client) => {
+    if (!client.pendingUpdate) return
+    
+    if (window.confirm('Deseja aprovar as alterações solicitadas pelo cliente?')) {
+      const updatedClient = {
+        ...client,
+        ...client.pendingUpdate,
+        pendingUpdate: null
+      }
+      saveClient(updatedClient)
+      loadData()
+      alert('Alterações aprovadas com sucesso!')
+    }
+  }
+  
+  const handleRejectPendingUpdate = (client) => {
+    if (!client.pendingUpdate) return
+    
+    if (window.confirm('Deseja rejeitar as alterações solicitadas pelo cliente?')) {
+      const updatedClient = {
+        ...client,
+        pendingUpdate: null
+      }
+      saveClient(updatedClient)
+      loadData()
+      alert('Alterações rejeitadas.')
     }
   }
 
@@ -47,7 +85,7 @@ function ClientManager() {
       saveClient(editingClient)
       setShowForm(false)
       setEditingClient(null)
-      loadClients()
+      loadData()
     } catch (error) {
       alert('Erro ao salvar cliente: ' + error.message)
     }
@@ -56,6 +94,10 @@ function ClientManager() {
   const handleCancel = () => {
     setShowForm(false)
     setEditingClient(null)
+  }
+  
+  const handleCloseDetails = () => {
+    setViewingClient(null)
   }
 
   const handleChange = (field, value) => {
@@ -68,6 +110,23 @@ function ClientManager() {
   const formatDate = (isoDate) => {
     if (!isoDate) return '-'
     return new Date(isoDate).toLocaleDateString('pt-BR')
+  }
+  
+  const getClientProposals = (clientId) => {
+    return proposals.filter(p => p.clientId === clientId)
+  }
+  
+  const getPropertyById = (propertyId) => {
+    return properties.find(p => p.id === propertyId)
+  }
+  
+  const getStatusLabel = (status) => {
+    const labels = {
+      pending: 'Pendente',
+      approved: 'Aprovada',
+      rejected: 'Rejeitada'
+    }
+    return labels[status] || status
   }
 
   return (
@@ -99,14 +158,45 @@ function ClientManager() {
             </thead>
             <tbody>
               {clients.map(client => (
-                <tr key={client.id}>
-                  <td>{client.name}</td>
+                <tr key={client.id} className={client.pendingUpdate ? 'has-pending-update' : ''}>
+                  <td>
+                    {client.name}
+                    {client.pendingUpdate && <span className="pending-badge">⏳</span>}
+                  </td>
                   <td>{client.email || '-'}</td>
                   <td>{client.phone || '-'}</td>
                   <td>{client.city || '-'}</td>
                   <td>{formatDate(client.createdAt)}</td>
                   <td>
                     <div className="table-actions">
+                      <button 
+                        className="btn-icon view" 
+                        onClick={() => handleViewDetails(client)}
+                        aria-label="Ver detalhes"
+                        title="Ver detalhes"
+                      >
+                        👁️
+                      </button>
+                      {client.pendingUpdate && (
+                        <>
+                          <button 
+                            className="btn-icon approve" 
+                            onClick={() => handleApprovePendingUpdate(client)}
+                            aria-label="Aprovar alterações"
+                            title="Aprovar alterações"
+                          >
+                            ✅
+                          </button>
+                          <button 
+                            className="btn-icon reject" 
+                            onClick={() => handleRejectPendingUpdate(client)}
+                            aria-label="Rejeitar alterações"
+                            title="Rejeitar alterações"
+                          >
+                            ❌
+                          </button>
+                        </>
+                      )}
                       <button 
                         className="btn-icon edit" 
                         onClick={() => handleEdit(client)}
@@ -254,6 +344,135 @@ function ClientManager() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      
+      {viewingClient && (
+        <div className="form-overlay" onClick={(e) => e.target === e.currentTarget && handleCloseDetails()}>
+          <div className="form-container client-details-modal">
+            <div className="form-header">
+              <h3>Detalhes do Cliente</h3>
+              <button className="close-btn" onClick={handleCloseDetails}>✕</button>
+            </div>
+
+            <div className="client-details-content">
+              <div className="details-section">
+                <h4>Informações Pessoais</h4>
+                <div className="info-grid">
+                  <div className="info-item">
+                    <span className="label">Nome:</span>
+                    <span className="value">{viewingClient.name}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Email:</span>
+                    <span className="value">{viewingClient.email || '-'}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Telefone:</span>
+                    <span className="value">{viewingClient.phone || '-'}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">CPF:</span>
+                    <span className="value">{viewingClient.cpf || '-'}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Cidade:</span>
+                    <span className="value">{viewingClient.city || '-'}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="label">Cadastrado em:</span>
+                    <span className="value">{formatDate(viewingClient.createdAt)}</span>
+                  </div>
+                </div>
+              </div>
+
+              {viewingClient.pendingUpdate && (
+                <div className="details-section pending-section">
+                  <h4>Alterações Pendentes</h4>
+                  <div className="pending-changes">
+                    {viewingClient.pendingUpdate.name !== viewingClient.name && (
+                      <div className="change-item">
+                        <span className="change-label">Nome:</span>
+                        <span className="change-old">{viewingClient.name}</span>
+                        <span className="change-arrow">→</span>
+                        <span className="change-new">{viewingClient.pendingUpdate.name}</span>
+                      </div>
+                    )}
+                    {viewingClient.pendingUpdate.email !== viewingClient.email && (
+                      <div className="change-item">
+                        <span className="change-label">Email:</span>
+                        <span className="change-old">{viewingClient.email}</span>
+                        <span className="change-arrow">→</span>
+                        <span className="change-new">{viewingClient.pendingUpdate.email}</span>
+                      </div>
+                    )}
+                    {viewingClient.pendingUpdate.phone !== viewingClient.phone && (
+                      <div className="change-item">
+                        <span className="change-label">Telefone:</span>
+                        <span className="change-old">{viewingClient.phone}</span>
+                        <span className="change-arrow">→</span>
+                        <span className="change-new">{viewingClient.pendingUpdate.phone}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="pending-actions">
+                    <button 
+                      className="btn-approve" 
+                      onClick={() => {
+                        handleApprovePendingUpdate(viewingClient)
+                        handleCloseDetails()
+                      }}
+                    >
+                      ✅ Aprovar Alterações
+                    </button>
+                    <button 
+                      className="btn-reject" 
+                      onClick={() => {
+                        handleRejectPendingUpdate(viewingClient)
+                        handleCloseDetails()
+                      }}
+                    >
+                      ❌ Rejeitar Alterações
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <div className="details-section">
+                <h4>Propostas ({getClientProposals(viewingClient.id).length})</h4>
+                {getClientProposals(viewingClient.id).length === 0 ? (
+                  <p className="no-data">Nenhuma proposta enviada</p>
+                ) : (
+                  <div className="proposals-list">
+                    {getClientProposals(viewingClient.id).map(proposal => {
+                      const property = getPropertyById(proposal.propertyId)
+                      return (
+                        <div key={proposal.id} className="proposal-item">
+                          <div className="proposal-status">
+                            <span className={`status-badge status-${proposal.status}`}>
+                              {getStatusLabel(proposal.status)}
+                            </span>
+                            <span className="proposal-date">{formatDate(proposal.createdAt)}</span>
+                          </div>
+                          {property && (
+                            <div className="proposal-property">
+                              <strong>{property.type}</strong> - {property.location}
+                              <div className="property-price">{property.price}</div>
+                            </div>
+                          )}
+                          {proposal.message && (
+                            <div className="proposal-message">
+                              <em>{proposal.message}</em>
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       )}
