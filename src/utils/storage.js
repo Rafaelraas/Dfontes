@@ -13,6 +13,9 @@ const STORAGE_KEYS = {
   AUTH_SESSION: 'dfontes_auth_session'
 };
 
+// Session duration constants (in milliseconds)
+const SESSION_DURATION_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+
 // Default properties data
 const DEFAULT_PROPERTIES = [
   {
@@ -217,7 +220,9 @@ export const authenticateClient = (email, password) => {
       throw new Error('Cliente não possui senha cadastrada');
     }
     
-    // Simple password comparison (in production, use hashed passwords)
+    // ⚠️ WARNING: Plain text password comparison - DEVELOPMENT ONLY
+    // In production, passwords should be hashed with bcrypt or similar
+    // This is a known security limitation of the current implementation
     if (client.password !== password) {
       throw new Error('Senha incorreta');
     }
@@ -234,7 +239,7 @@ export const setClientSession = (client) => {
     const session = {
       client,
       timestamp: new Date().toISOString(),
-      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() // 30 days
+      expiresAt: new Date(Date.now() + SESSION_DURATION_MS).toISOString()
     };
     localStorage.setItem(STORAGE_KEYS.CLIENT_SESSION, JSON.stringify(session));
   } catch (error) {

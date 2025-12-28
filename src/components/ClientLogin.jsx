@@ -44,6 +44,9 @@ function ClientLogin({ onLoginSuccess, onSwitchToRegister, onClose }) {
           password: formData.password
         })
       }
+      
+      // Reset loading state after successful login
+      setIsLoading(false)
     } catch (err) {
       setError(err.message)
       setIsLoading(false)
