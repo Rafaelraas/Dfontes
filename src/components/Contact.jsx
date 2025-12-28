@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { getClientSession, saveMessage } from '../utils/storage'
 import './Contact.css'
 
 function Contact() {
@@ -39,9 +40,27 @@ function Contact() {
       return
     }
 
-    // Placeholder for form submission
-    alert('Obrigado pelo contato! Em breve retornaremos.')
-    setFormData({ name: '', email: '', phone: '', message: '' })
+    // Check if client is logged in
+    const client = getClientSession()
+    
+    // Save message
+    try {
+      const message = {
+        clientId: client ? client.id : null,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message
+      }
+      
+      saveMessage(message)
+      
+      alert('Obrigado pelo contato! Em breve retornaremos.')
+      setFormData({ name: '', email: '', phone: '', message: '' })
+    } catch (error) {
+      alert('Erro ao enviar mensagem. Tente novamente.')
+      console.error('Error saving message:', error)
+    }
   }
 
   return (

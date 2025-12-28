@@ -1,25 +1,102 @@
+import { useState } from 'react'
 import { pluralizePT } from '../utils/propertyHelpers'
+import { 
+  getClientSession, 
+  getClientByEmail, 
+  saveClient, 
+  authenticateClient, 
+  setClientSession,
+  saveProposal 
+} from '../utils/storage'
+import ClientRegistration from './ClientRegistration'
+import ClientLogin from './ClientLogin'
 import './PropertyDetails.css'
 
 function PropertyDetails({ property, onClose }) {
+  const [showAuth, setShowAuth] = useState(false)
+  const [authMode, setAuthMode] = useState('register') // 'register' or 'login'
+  
   if (!property) return null
 
   const handleQuoteRequest = () => {
-    // Scroll to contact section and pre-fill with property info
-    const contactSection = document.getElementById('contato')
-    if (contactSection) {
-      onClose()
-      contactSection.scrollIntoView({ behavior: 'smooth' })
-      
-      // Try to fill contact form if inputs exist
-      setTimeout(() => {
-        const messageInput = document.querySelector('#contato textarea')
-        if (messageInput) {
-          messageInput.value = `Olá, gostaria de realizar uma proposta para o ${property.type} localizado em ${property.location} (${property.price}). Aguardo retorno.`
-          messageInput.focus()
-        }
-      }, 800)
+    // Check if client is already logged in
+    const client = getClientSession()
+    
+    if (client) {
+      // Client is logged in, create proposal directly
+      handleCreateProposal(client)
+    } else {
+      // Show registration/login modal
+      setShowAuth(true)
+      setAuthMode('register')
     }
+  }
+  
+  const handleCreateProposal = (client) => {
+    try {
+      const message = `Gostaria de realizar uma proposta para o ${property.type} localizado em ${property.location} (${property.price}).`
+      
+      const proposal = {
+        clientId: client.id,
+        propertyId: property.id,
+        message: message,
+        status: 'pending'
+      }
+      
+      saveProposal(proposal)
+      
+      alert('Proposta enviada com sucesso! Você pode acompanhar suas propostas no seu painel.')
+      
+      setShowAuth(false)
+      onClose()
+    } catch (error) {
+      alert('Erro ao enviar proposta: ' + error.message)
+    }
+  }
+  
+  const handleRegisterSuccess = (formData) => {
+    try {
+      // Check if client already exists
+      const existingClient = getClientByEmail(formData.email)
+      if (existingClient) {
+        alert('Email já cadastrado. Por favor, faça login.')
+        setAuthMode('login')
+        return
+      }
+      
+      // Create new client
+      const newClient = saveClient(formData)
+      setClientSession(newClient)
+      
+      // Create proposal
+      handleCreateProposal(newClient)
+    } catch (error) {
+      alert('Erro ao criar conta: ' + error.message)
+    }
+  }
+  
+  const handleLoginSuccess = (credentials) => {
+    try {
+      const client = authenticateClient(credentials.email, credentials.password)
+      setClientSession(client)
+      
+      // Create proposal
+      handleCreateProposal(client)
+    } catch (error) {
+      alert('Erro ao fazer login: ' + error.message)
+    }
+  }
+  
+  const handleCloseAuth = () => {
+    setShowAuth(false)
+  }
+  
+  const handleSwitchToLogin = () => {
+    setAuthMode('login')
+  }
+  
+  const handleSwitchToRegister = () => {
+    setAuthMode('register')
   }
 
   const handleBackdropClick = (e) => {
@@ -124,6 +201,22 @@ function PropertyDetails({ property, onClose }) {
           </div>
         </div>
       </div>
+      
+      {showAuth && authMode === 'register' && (
+        <ClientRegistration
+          onRegisterSuccess={handleRegisterSuccess}
+          onSwitchToLogin={handleSwitchToLogin}
+          onClose={handleCloseAuth}
+        />
+      )}
+      
+      {showAuth && authMode === 'login' && (
+        <ClientLogin
+          onLoginSuccess={handleLoginSuccess}
+          onSwitchToRegister={handleSwitchToRegister}
+          onClose={handleCloseAuth}
+        />
+      )}
     </div>
   )
 }

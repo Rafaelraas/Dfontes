@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { getClientSession } from '../utils/storage'
 import './Header.css'
 
-function Header() {
+function Header({ onOpenClientPortal }) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const client = getClientSession()
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId)
@@ -10,6 +12,13 @@ function Header() {
       element.scrollIntoView({ behavior: 'smooth' })
       setMenuOpen(false)
     }
+  }
+  
+  const handlePortalClick = () => {
+    if (onOpenClientPortal) {
+      onOpenClientPortal()
+    }
+    setMenuOpen(false)
   }
 
   return (
@@ -58,6 +67,13 @@ function Header() {
             <li>
               <a onClick={() => scrollToSection('contato')}>Contato</a>
             </li>
+            {client && (
+              <li>
+                <a onClick={handlePortalClick} className="portal-link">
+                  Meu Painel
+                </a>
+              </li>
+            )}
           </ul>
         </nav>
       </div>

@@ -6,6 +6,9 @@
 const STORAGE_KEYS = {
   PROPERTIES: 'dfontes_properties',
   CLIENTS: 'dfontes_clients',
+  PROPOSALS: 'dfontes_proposals',
+  MESSAGES: 'dfontes_messages',
+  CLIENT_SESSION: 'dfontes_client_session',
   AUTH_USER: 'dfontes_auth_user',
   AUTH_SESSION: 'dfontes_auth_session'
 };
@@ -188,6 +191,208 @@ export const deleteClient = (id) => {
     return true;
   } catch (error) {
     console.error('Error deleting client:', error);
+    throw error;
+  }
+};
+
+// Client Authentication Functions
+export const getClientByEmail = (email) => {
+  try {
+    const clients = getClients();
+    return clients.find(c => c.email && c.email.toLowerCase() === email.toLowerCase());
+  } catch (error) {
+    console.error('Error finding client by email:', error);
+    return null;
+  }
+};
+
+export const authenticateClient = (email, password) => {
+  try {
+    const client = getClientByEmail(email);
+    if (!client) {
+      throw new Error('Cliente não encontrado');
+    }
+    
+    if (!client.password) {
+      throw new Error('Cliente não possui senha cadastrada');
+    }
+    
+    // Simple password comparison (in production, use hashed passwords)
+    if (client.password !== password) {
+      throw new Error('Senha incorreta');
+    }
+    
+    return client;
+  } catch (error) {
+    console.error('Error authenticating client:', error);
+    throw error;
+  }
+};
+
+export const setClientSession = (client) => {
+  try {
+    const session = {
+      client,
+      timestamp: new Date().toISOString(),
+      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() // 30 days
+    };
+    localStorage.setItem(STORAGE_KEYS.CLIENT_SESSION, JSON.stringify(session));
+  } catch (error) {
+    console.error('Error setting client session:', error);
+    throw error;
+  }
+};
+
+export const getClientSession = () => {
+  try {
+    const sessionStr = localStorage.getItem(STORAGE_KEYS.CLIENT_SESSION);
+    if (!sessionStr) {
+      return null;
+    }
+    
+    const session = JSON.parse(sessionStr);
+    
+    // Check if session has expired
+    if (new Date(session.expiresAt) < new Date()) {
+      clearClientSession();
+      return null;
+    }
+    
+    return session.client;
+  } catch (error) {
+    console.error('Error getting client session:', error);
+    clearClientSession();
+    return null;
+  }
+};
+
+export const clearClientSession = () => {
+  try {
+    localStorage.removeItem(STORAGE_KEYS.CLIENT_SESSION);
+  } catch (error) {
+    console.error('Error clearing client session:', error);
+  }
+};
+
+// Proposal Storage Functions
+export const getProposals = () => {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEYS.PROPOSALS);
+    return stored ? JSON.parse(stored) : [];
+  } catch (error) {
+    console.error('Error loading proposals:', error);
+    return [];
+  }
+};
+
+export const saveProposal = (proposal) => {
+  try {
+    const proposals = getProposals();
+    
+    if (proposal.id) {
+      // Update existing
+      const index = proposals.findIndex(p => p.id === proposal.id);
+      if (index !== -1) {
+        proposals[index] = { ...proposal, updatedAt: new Date().toISOString() };
+      }
+    } else {
+      // Create new
+      const maxId = proposals.length > 0 
+        ? Math.max(...proposals.map(p => p.id))
+        : 0;
+      proposal.id = maxId + 1;
+      proposal.createdAt = new Date().toISOString();
+      proposal.status = 'pending'; // pending, approved, rejected
+      proposals.push(proposal);
+    }
+    
+    localStorage.setItem(STORAGE_KEYS.PROPOSALS, JSON.stringify(proposals));
+    return proposal;
+  } catch (error) {
+    console.error('Error saving proposal:', error);
+    throw error;
+  }
+};
+
+export const getProposalsByClient = (clientId) => {
+  try {
+    const proposals = getProposals();
+    return proposals.filter(p => p.clientId === clientId);
+  } catch (error) {
+    console.error('Error getting proposals by client:', error);
+    return [];
+  }
+};
+
+export const deleteProposal = (id) => {
+  try {
+    const proposals = getProposals();
+    const filtered = proposals.filter(p => p.id !== id);
+    localStorage.setItem(STORAGE_KEYS.PROPOSALS, JSON.stringify(filtered));
+    return true;
+  } catch (error) {
+    console.error('Error deleting proposal:', error);
+    throw error;
+  }
+};
+
+// Message Storage Functions
+export const getMessages = () => {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEYS.MESSAGES);
+    return stored ? JSON.parse(stored) : [];
+  } catch (error) {
+    console.error('Error loading messages:', error);
+    return [];
+  }
+};
+
+export const saveMessage = (message) => {
+  try {
+    const messages = getMessages();
+    
+    if (message.id) {
+      // Update existing
+      const index = messages.findIndex(m => m.id === message.id);
+      if (index !== -1) {
+        messages[index] = { ...message, updatedAt: new Date().toISOString() };
+      }
+    } else {
+      // Create new
+      const maxId = messages.length > 0 
+        ? Math.max(...messages.map(m => m.id))
+        : 0;
+      message.id = maxId + 1;
+      message.createdAt = new Date().toISOString();
+      messages.push(message);
+    }
+    
+    localStorage.setItem(STORAGE_KEYS.MESSAGES, JSON.stringify(messages));
+    return message;
+  } catch (error) {
+    console.error('Error saving message:', error);
+    throw error;
+  }
+};
+
+export const getMessagesByClient = (clientId) => {
+  try {
+    const messages = getMessages();
+    return messages.filter(m => m.clientId === clientId);
+  } catch (error) {
+    console.error('Error getting messages by client:', error);
+    return [];
+  }
+};
+
+export const deleteMessage = (id) => {
+  try {
+    const messages = getMessages();
+    const filtered = messages.filter(m => m.id !== id);
+    localStorage.setItem(STORAGE_KEYS.MESSAGES, JSON.stringify(filtered));
+    return true;
+  } catch (error) {
+    console.error('Error deleting message:', error);
     throw error;
   }
 };
