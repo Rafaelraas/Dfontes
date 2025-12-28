@@ -15,7 +15,7 @@ function PropertyDetails({ property, onClose }) {
       setTimeout(() => {
         const messageInput = document.querySelector('#contato textarea')
         if (messageInput) {
-          messageInput.value = `Olá, gostaria de solicitar uma cotação para o ${property.type} localizado em ${property.location} (${property.price}). Aguardo retorno.`
+          messageInput.value = `Olá, gostaria de realizar uma proposta para o ${property.type} localizado em ${property.location} (${property.price}). Aguardo retorno.`
           messageInput.focus()
         }
       }, 800)
@@ -116,9 +116,9 @@ function PropertyDetails({ property, onClose }) {
               <button 
                 className="btn-quote"
                 onClick={handleQuoteRequest}
-                aria-label="Solicitar cotação para este imóvel"
+                aria-label="Efetuar proposta para este imóvel"
               >
-                Solicitar Cotação
+                Efetuar Proposta
               </button>
             </div>
           </div>
