@@ -115,18 +115,41 @@ O site está otimizado para:
 
 ## 🚀 Deploy
 
-Este projeto está configurado para deploy automático no **GitHub Pages** via GitHub Actions!
+Este projeto está **totalmente configurado** para deploy em múltiplas plataformas!
 
-### Deploy Automático (GitHub Pages) ✅
+### Deploy no Vercel (Recomendado) ✅
+
+O projeto inclui configuração completa para Vercel (`vercel.json`):
+
+**Via Interface Web:**
+1. Acesse [vercel.com](https://vercel.com)
+2. Importe o repositório `Dfontes`
+3. Deploy automático em ~1 minuto!
+
+**Via CLI:**
+```bash
+npm install -g vercel
+vercel --prod
+```
+
+**Recursos:**
+- ✅ Deploy automático em cada push
+- ✅ Preview de Pull Requests
+- ✅ HTTPS automático
+- ✅ CDN global
+- ✅ Domínio customizado fácil
+
+📖 **Guia completo**: Consulte [VERCEL_DEPLOY.md](VERCEL_DEPLOY.md) para instruções detalhadas.
+
+### Deploy no GitHub Pages ✅
 
 Ao fazer push para a branch `main`, o site é automaticamente deployado em:
 **https://rafaelraas.github.io/Dfontes**
 
 ### Outras Opções de Deploy
 
-O projeto também pode ser deployado em outros serviços:
+O projeto também pode ser deployado em:
 
-- **Vercel**: `vercel deploy`
 - **Netlify**: Arraste a pasta `dist` ou conecte o repositório
 - **Servidor próprio**: Faça upload da pasta `dist`
 
