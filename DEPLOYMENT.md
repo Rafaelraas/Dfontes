@@ -4,28 +4,74 @@
 
 - Node.js 18+ instalado
 - npm ou yarn como gerenciador de pacotes
-- Conta em serviço de hospedagem (Vercel, Netlify, etc.)
+- Conta em serviço de hospedagem (Vercel, Netlify, GitHub Pages)
 
 ## 🚀 Deploy Rápido
 
-### Opção 1: Vercel (Recomendado)
+### Opção 1: Vercel (Recomendado) ✅
+
+O projeto está **totalmente configurado** para deploy no Vercel!
+
+#### Deploy via Interface Web (Mais Fácil)
+
+1. Acesse [vercel.com](https://vercel.com) e faça login com sua conta GitHub
+2. Clique em "Add New Project" ou "Import Project"
+3. Selecione o repositório `Dfontes`
+4. Clique em "Import"
+5. As configurações serão detectadas automaticamente:
+   - **Framework Preset**: Vite
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+   - **Install Command**: `npm install`
+6. Clique em "Deploy"
+7. Pronto! Seu site estará no ar em ~1 minuto
+
+**URL de produção**: `https://dfontes.vercel.app` (ou domínio customizado)
+
+#### Deploy via CLI
 
 1. Instale o Vercel CLI:
 ```bash
 npm install -g vercel
 ```
 
-2. Faça o deploy:
+2. Faça login (primeira vez apenas):
+```bash
+vercel login
+```
+
+3. Deploy para preview:
 ```bash
 vercel
 ```
 
-3. Siga as instruções no terminal
+4. Deploy para produção:
+```bash
+vercel --prod
+```
 
 **Configurações automáticas:**
-- Build Command: `npm run build`
-- Output Directory: `dist`
-- Install Command: `npm install`
+- ✅ Build Command: `npm run build`
+- ✅ Output Directory: `dist`
+- ✅ Install Command: `npm install`
+- ✅ Framework Detection: Vite
+- ✅ Node.js Version: Detectado automaticamente
+- ✅ Environment: `VERCEL=1` (configurado automaticamente)
+
+#### Configuração de Domínio Personalizado
+
+1. No dashboard do Vercel, vá em "Settings" → "Domains"
+2. Adicione seu domínio (ex: `dernivalfontes.com.br`)
+3. Siga as instruções para configurar DNS
+4. HTTPS será configurado automaticamente
+
+#### Deploy Automático via Git
+
+Depois do primeiro deploy:
+- ✅ Push para `main` → Deploy automático em produção
+- ✅ Pull Requests → Deploy de preview automático
+- ✅ Outras branches → Deploy de preview
+- ✅ Rollback instantâneo se necessário
 
 ### Opção 2: Netlify
 
@@ -42,7 +88,7 @@ npm install -g netlify-cli
 netlify deploy --prod
 ```
 
-### Opção 3: GitHub Pages (Configurado - Recomendado) ✅
+### Opção 3: GitHub Pages (Configurado) ✅
 
 Este projeto está configurado para deploy automático via GitHub Actions!
 
