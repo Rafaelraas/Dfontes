@@ -139,6 +139,8 @@ vercel --prod
 - ✅ CDN global
 - ✅ Domínio customizado fácil
 
+📖 **Guia completo**: Consulte [VERCEL_DEPLOY.md](VERCEL_DEPLOY.md) para instruções detalhadas.
+
 ### Deploy no GitHub Pages ✅
 
 Ao fazer push para a branch `main`, o site é automaticamente deployado em:
